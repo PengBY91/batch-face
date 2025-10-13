@@ -23,7 +23,7 @@ def read_requirements(filename):
 
 setup(
     name="batch-face",
-    version="1.5.3",
+    version="1.5.4",
     description="Batch Face Preprocessing for Modern Research",
     author="Elliott Zheng",
     author_email="admin@hypercube.top",
