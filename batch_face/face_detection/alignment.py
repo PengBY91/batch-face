@@ -691,6 +691,8 @@ def pseudo_batch_detect(net, images, device, is_tensor=False, threshold=0.5, cv=
 
     if max_size == -1:
         max_size = 640
+    elif max_size > 640:
+        max_size = 640
 
     # 记录原始尺寸
     if not is_tensor:
@@ -821,6 +823,9 @@ def batch_detect(net, images, device, is_tensor=False, threshold=0.5, cv=False,
     if resize == 1 and max_size != -1:
         # compute resize factor
         resize = max_size / max(img.shape[1], img.shape[2])
+        if resize > 1:
+            print("max_size is larger than the image size, no need to resize")
+            resize = 1
     elif resize != 1 and max_size != -1:
         estimated_max_size = max(img.shape[1], img.shape[2]) * resize
         if estimated_max_size > max_size: # if the estimated size is larger than the max_size, use max_size

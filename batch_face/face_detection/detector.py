@@ -37,6 +37,15 @@ def chunk_generator(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
+def are_same_size(images):
+    # list
+    base_shape = images[0].shape
+    for shape in images:
+        if not np.all(shape==base_shape):
+            return False
+    return True
+
+
 class RetinaFace:
     def __init__(
         self,
@@ -85,7 +94,10 @@ class RetinaFace:
             elif len(images.shape) == 4:
                 return batch_detect(self.model, images, **kwargs)
         elif isinstance(images, list):
-            return pseudo_batch_detect(self.model, images, **kwargs)
+            if are_same_size(images):
+                return batch_detect(self.model, images, **kwargs)
+            else:
+                return pseudo_batch_detect(self.model, images, **kwargs)
         elif isinstance(images, torch.Tensor):
             kwargs["is_tensor"] = True
             if len(images.shape) == 3:
